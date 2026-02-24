@@ -31,7 +31,9 @@ docs/
 │   └── merchant-commentary.md        ← Dynamic merchant dialogue system
 ├── guides/                           ← Workflow and integration guides
 │   ├── player-workflow.md            ← End-to-end API workflow for a player session
-│   └── fe-api-mismatch-report.md     ← Frontend/API response format mismatch audit
+│   ├── fe-api-mismatch-report.md     ← Frontend/API response format mismatch audit
+│   ├── implementation-plan.md        ← 12-phase frontend implementation roadmap
+│   └── learning-guide.md             ← File-by-file Svelte 5 learning walkthrough
 ├── reference/                        ← Lookup tables and glossaries
 │   ├── ship-stats.md                 ← Ship class stats, components, upgrade paths
 │   └── lexical-jargon.md             ← In-game terminology and lore glossary
@@ -50,4 +52,6 @@ docs/
 | Game terminology | [reference/lexical-jargon.md](reference/lexical-jargon.md) |
 | Fog-of-war design | [design/fog-of-war.md](design/fog-of-war.md) |
 | FE/API format mismatches | [guides/fe-api-mismatch-report.md](guides/fe-api-mismatch-report.md) |
+| Implementation roadmap | [guides/implementation-plan.md](guides/implementation-plan.md) |
+| Learning Svelte 5 walkthrough | [guides/learning-guide.md](guides/learning-guide.md) |
 | TypeScript types | [types/](types/) |

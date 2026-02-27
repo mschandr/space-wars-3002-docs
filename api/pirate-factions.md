@@ -272,7 +272,7 @@ Required
   "data": {
     "player": {
       "uuid": "950e8400-e29b-41d4-a716-446655440000",
-      "call_sign": "Starblazer"
+      "company_name": "Starblazer"
     },
     "galaxy": {
       "uuid": "550e8400-e29b-41d4-a716-446655440000",
@@ -301,7 +301,7 @@ Required
 
 **Field Descriptions:**
 - `player.uuid` - Player's unique identifier
-- `player.call_sign` - Player's call sign
+- `player.company_name` - Player's company name
 - `galaxy.uuid` - UUID of player's current galaxy
 - `galaxy.name` - Name of player's galaxy
 - `faction_reputations` - Array of reputation objects for each faction

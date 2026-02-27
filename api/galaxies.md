@@ -245,7 +245,7 @@ Retrieves full hydrated details for a specific galaxy (public endpoint).
     "players": [
       {
         "uuid": "string",
-        "call_sign": "string",
+        "company_name": "string",
         "level": "integer",
         "status": "string"
       }
@@ -955,7 +955,7 @@ Retrieves the authenticated user's player in a specific galaxy.
   "data": {
     "player": {
       "uuid": "string",
-      "call_sign": "string",
+      "company_name": "string",
       "level": "integer",
       "experience": "integer",
       "credits": "float",
@@ -1021,13 +1021,13 @@ Joins a galaxy (idempotent: returns existing player or creates new one).
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `call_sign` | string | Conditional | Player name (max 50 chars, unique per galaxy). Required only if creating new player |
+| `company_name` | string | Conditional | Player's company name (max 50 chars, unique per galaxy). Required only if creating new player |
 
 **Request Body Example:**
 
 ```json
 {
-  "call_sign": "StarLord"
+  "company_name": "StarLord"
 }
 ```
 
@@ -1039,7 +1039,7 @@ Joins a galaxy (idempotent: returns existing player or creates new one).
   "data": {
     "player": {
       "uuid": "string",
-      "call_sign": "string",
+      "company_name": "string",
       "level": "integer",
       "experience": "integer",
       "credits": "float",
@@ -1100,8 +1100,8 @@ When creating a new player, the following occurs:
 | 400 | GALAXY_FULL | Galaxy at maximum player capacity |
 | 403 | SINGLE_PLAYER_GALAXY | Single-player galaxy and user is not owner |
 | 404 | NOT_FOUND | Galaxy not found |
-| 422 | DUPLICATE_CALL_SIGN | Call sign already exists in this galaxy |
-| 422 | VALIDATION_ERROR | Invalid call_sign parameter |
+| 422 | DUPLICATE_COMPANY_NAME | Company name already exists in this galaxy |
+| 422 | VALIDATION_ERROR | Invalid company_name parameter |
 | 500 | JOIN_FAILED | Player creation failed |
 | 500 | NO_STARTING_LOCATION | No inhabited starting location found |
 
@@ -1530,7 +1530,7 @@ Retrieves lightweight map data for known systems (optimized for tooltips and qui
 | `NO_PLAYER_IN_GALAXY` | User has no player in specified galaxy |
 | `GALAXY_NOT_ACTIVE` | Galaxy not accepting new players |
 | `GALAXY_FULL` | Galaxy at maximum player capacity |
-| `DUPLICATE_CALL_SIGN` | Call sign already exists in galaxy |
+| `DUPLICATE_COMPANY_NAME` | Company name already exists in galaxy |
 | `DUPLICATE_GALAXY_NAME` | Galaxy name already exists |
 
 ## Authentication

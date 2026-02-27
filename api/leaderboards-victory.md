@@ -58,7 +58,7 @@ This document covers all endpoints related to player leaderboards, rankings, sta
         "rank": 1,
         "player": {
           "uuid": "660e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "StarLord",
+          "company_name": "StarLord",
           "user_name": "John Doe"
         },
         "stats": {
@@ -75,7 +75,7 @@ This document covers all endpoints related to player leaderboards, rankings, sta
         "rank": 2,
         "player": {
           "uuid": "770e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "Nova",
+          "company_name": "Nova",
           "user_name": "Jane Smith"
         },
         "stats": {
@@ -102,7 +102,7 @@ This document covers all endpoints related to player leaderboards, rankings, sta
 - `leaders`: Array of leaderboard entries
   - `rank`: Player's position on the leaderboard (1-indexed)
   - `player.uuid`: Player's unique identifier
-  - `player.call_sign`: Player's in-game name/callsign
+  - `player.company_name`: Player's company name
   - `player.user_name`: Associated user account name (may be "Unknown" if user deleted)
   - `stats.level`: Player's current level
   - `stats.experience`: Total experience points accumulated
@@ -168,7 +168,7 @@ This document covers all endpoints related to player leaderboards, rankings, sta
         "rank": 1,
         "player": {
           "uuid": "660e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "Midas",
+          "company_name": "Midas",
           "user_name": "John Doe"
         },
         "economic_stats": {
@@ -245,7 +245,7 @@ This document covers all endpoints related to player leaderboards, rankings, sta
         "rank": 1,
         "player": {
           "uuid": "660e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "WarHawk",
+          "company_name": "WarHawk",
           "user_name": "John Doe"
         },
         "combat_stats": {
@@ -333,7 +333,7 @@ combat_score = (pvp_wins × 10) + (pirate_kills × 5) + (kd_ratio × 2)
         "rank": 1,
         "player": {
           "uuid": "660e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "ColonyMaster",
+          "company_name": "ColonyMaster",
           "user_name": "John Doe"
         },
         "colonial_stats": {
@@ -414,7 +414,7 @@ Where `galaxy_total_population` is the sum of all colony populations across all 
   "data": {
     "player": {
       "uuid": "660e8400-e29b-41d4-a716-446655440000",
-      "call_sign": "StarLord"
+      "company_name": "StarLord"
     },
     "galaxy": {
       "uuid": "550e8400-e29b-41d4-a716-446655440000",
@@ -433,7 +433,7 @@ Where `galaxy_total_population` is the sum of all colony populations across all 
 **Response Fields Explained:**
 
 - `player.uuid`: The player's unique identifier
-- `player.call_sign`: The player's in-game name/callsign
+- `player.company_name`: The player's company name
 - `galaxy.uuid`: The UUID of the galaxy the player belongs to
 - `galaxy.name`: Human-readable name of the galaxy
 - `rankings.overall`: Player's rank on the overall leaderboard (1 = top rank)
@@ -493,7 +493,7 @@ Where `galaxy_total_population` is the sum of all colony populations across all 
   "data": {
     "player": {
       "uuid": "660e8400-e29b-41d4-a716-446655440000",
-      "call_sign": "StarLord",
+      "company_name": "StarLord",
       "level": 35,
       "experience": 875000
     },
@@ -530,7 +530,7 @@ Where `galaxy_total_population` is the sum of all colony populations across all 
 **Response Fields Explained:**
 
 - `player.uuid`: Player's unique identifier
-- `player.call_sign`: Player's in-game name/callsign
+- `player.company_name`: Player's company name
 - `player.level`: Player's current level
 - `player.experience`: Total experience points
 - `galaxy.uuid`: UUID of the galaxy the player belongs to
@@ -715,14 +715,14 @@ Where `galaxy_total_population` is the sum of all colony populations across all 
       "merchant_empire": [
         {
           "uuid": "660e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "Midas",
+          "company_name": "Midas",
           "user_name": "John Doe",
           "credits": 750000000,
           "progress_percent": 75
         },
         {
           "uuid": "770e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "TradeLord",
+          "company_name": "TradeLord",
           "user_name": "Jane Smith",
           "credits": 500000000,
           "progress_percent": 50
@@ -731,7 +731,7 @@ Where `galaxy_total_population` is the sum of all colony populations across all 
       "colonization": [
         {
           "uuid": "880e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "ColonyMaster",
+          "company_name": "ColonyMaster",
           "user_name": "Bob Johnson",
           "population": 12500000,
           "population_share_percent": 45.5,
@@ -741,7 +741,7 @@ Where `galaxy_total_population` is the sum of all colony populations across all 
       "conquest": [
         {
           "uuid": "990e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "Conqueror",
+          "company_name": "Conqueror",
           "user_name": "Alice Williams",
           "systems_controlled": 180,
           "systems_share_percent": 55.2,
@@ -826,7 +826,7 @@ Conquest: (systems_share / required_share) × 100 (capped at 100)
   "data": {
     "player": {
       "uuid": "660e8400-e29b-41d4-a716-446655440000",
-      "call_sign": "StarLord"
+      "company_name": "StarLord"
     },
     "galaxy": {
       "uuid": "550e8400-e29b-41d4-a716-446655440000",

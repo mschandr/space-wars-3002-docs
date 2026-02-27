@@ -482,10 +482,10 @@ interface PlayerState {
 
 > **Learning note:** The `??` (nullish coalescing) operator is different from `||`. With `||`, the value `0` would be treated as falsy and replaced. With `??`, only `null` and `undefined` are replaced. So `player.credits ?? 0` correctly preserves a `credits` value of `0`.
 
-#### `joinGalaxy(callSign)` (Line 559)
-**What it does:** Sends a join request to enter a galaxy with a chosen call sign.
+#### `joinGalaxy(companyName)` (Line 559)
+**What it does:** Sends a join request to enter a galaxy with a chosen company name.
 
-**Error handling:** Uses a `switch` statement to provide user-friendly error messages for each possible error code (`GALAXY_FULL`, `DUPLICATE_CALL_SIGN`, etc.).
+**Error handling:** Uses a `switch` statement to provide user-friendly error messages for each possible error code (`GALAXY_FULL`, `DUPLICATE_COMPANY_NAME`, etc.).
 
 #### `loadLocationDetails()` (Line 170)
 **What it does:** Fetches detailed information about the current star system (services, gates, trading hubs).
@@ -1296,7 +1296,7 @@ const response = await api.galaxies.join(uuid, data);
 if (!response.success) {
   switch (response.error?.code) {
     case 'GALAXY_FULL': error = 'Galaxy is full'; break;
-    case 'DUPLICATE_CALL_SIGN': error = 'Name taken'; break;
+    case 'DUPLICATE_COMPANY_NAME': error = 'Name taken'; break;
     default: error = response.error?.message || 'Unknown error';
   }
 }

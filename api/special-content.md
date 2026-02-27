@@ -137,7 +137,7 @@ Required (player must own this UUID or be admin)
   "data": {
     "player": {
       "uuid": "950e8400-e29b-41d4-a716-446655440000",
-      "call_sign": "Starblazer"
+      "company_name": "Starblazer"
     },
     "access": {
       "has_sufficient_sensors": true,
@@ -169,7 +169,7 @@ Required (player must own this UUID or be admin)
 
 **Field Descriptions:**
 - `player.uuid` - Player's unique identifier
-- `player.call_sign` - Player's call sign
+- `player.company_name` - Player's company name
 - `access.has_sufficient_sensors` - Boolean: player's ship meets sensor requirement
 - `access.required_sensor_level` - Minimum sensor level needed (from config)
 - `access.current_sensor_level` - Player's active ship's sensor level

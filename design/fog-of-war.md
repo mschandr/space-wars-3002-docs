@@ -499,7 +499,7 @@ GET /api/players/{uuid}/local-bodies
                 "status": "operational",
                 "owner": {
                   "uuid": "player-uuid",
-                  "call_sign": "Captain Vex"
+                  "company_name": "Captain Vex"
                 }
               }
             ],

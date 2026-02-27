@@ -16,12 +16,12 @@ Lines 474-548: Validation & Guards
 ...
 548 │     }
 549 │
-550 │     // Check if call sign is unique within this galaxy
-551 │     $existingCallSign = Player::where('galaxy_id', $galaxy->id)
-552 │         ->where('call_sign', $validated['call_sign'])
+550 │     // Check if company name is unique within this galaxy
+551 │     $existingCompanyName = Player::where('galaxy_id', $galaxy->id)
+552 │         ->where('company_name', $validated['company_name'])
 553 │         ->first();
 554 │
-555 │     if ($existingCallSign) {
+555 │     if ($existingCompanyName) {
 560 │         return $this->error(...)
 561 │     }
 562 │
@@ -59,7 +59,7 @@ Lines 474-548: Validation & Guards
 594 │         $player = Player::create([
 595 │             'user_id' => $user->id,
 596 │             'galaxy_id' => $galaxy->id,
-597 │             'call_sign' => $validated['call_sign'],
+597 │             'company_name' => $validated['company_name'],
 598 │             'credits' => $startingCredits,
 599 │             'experience' => 0,
 600 │             'level' => 1,
@@ -84,7 +84,7 @@ Lines 474-548: Validation & Guards
 619 │                 'player_id' => $player->id,
 620 │                 'ship_id' => $starterShip->id,
 621 │                 'current_poi_id' => $player->current_poi_id,
-622 │                 'name' => "{$player->call_sign}'s Sparrow",
+622 │                 'name' => "{$player->company_name}'s Sparrow",
 623 │                 'current_fuel' => $attrs['max_fuel'] ?? 100,
 624 │                 'max_fuel' => $attrs['max_fuel'] ?? 100,
 625 │                 'hull' => $starterShip->hull_strength ?? 80,
@@ -158,7 +158,7 @@ Lines 36-65: Validation
 39 │         // TODO: Missing validation details
 40 │         $validated = $request->validate([
 41 │             'galaxy_id' => ['required', 'exists:galaxies,id'],
-42 │             'call_sign' => ['required', 'string', 'max:50'],
+42 │             'company_name' => ['required', 'string', 'max:50'],
 43 │         ]);
 44 │     } catch (ValidationException $e) {
 45 │         return $this->validationError($e->errors());
@@ -166,15 +166,15 @@ Lines 36-65: Validation
 47 │
 48 │     $galaxy = Galaxy::findOrFail($validated['galaxy_id']);
 49 │
-50 │     // Check if call sign is unique within this galaxy
+50 │     // Check if company name is unique within this galaxy
 51 │     $existingPlayer = Player::where('galaxy_id', $galaxy->id)
-52 │         ->where('call_sign', $validated['call_sign'])
+52 │         ->where('company_name', $validated['company_name'])
 53 │         ->first();
 54 │
 55 │     if ($existingPlayer) {
 56 │         return $this->error(
-57 │             'Call sign already exists in this galaxy',
-58 │             'DUPLICATE_CALL_SIGN',
+57 │             'Company name already exists in this galaxy',
+58 │             'DUPLICATE_COMPANY_NAME',
 59 │             null,
 60 │             422
 61 │         );
@@ -205,7 +205,7 @@ Lines 36-65: Validation
 85 │         $player = Player::create([
 86 │             'user_id' => $request->user()->id,
 87 │             'galaxy_id' => $galaxy->id,
-88 │             'call_sign' => $validated['call_sign'],
+88 │             'company_name' => $validated['company_name'],
 89 │             'credits' => $startingCredits,
 90 │             'experience' => 0,
 91 │             'level' => 1,
@@ -271,7 +271,7 @@ Lines 35-79: Validation
 36 │ {
 37 │     $galaxyId = $this->argument('galaxy_id');
 38 │     $userId = $this->argument('user_id');
-39 │     $callSign = $this->argument('call_sign');
+39 │     $companyName = $this->argument('company_name');
 40 │
 41 │     // Validate galaxy exists
 42 │     $galaxy = Galaxy::find($galaxyId);
@@ -304,7 +304,7 @@ Lines 35-79: Validation
 91 │     $player = Player::create([
 92 │         'user_id' => $userId,
 93 │         'galaxy_id' => $galaxyId,
-94 │         'call_sign' => $callSign,
+94 │         'company_name' => $companyName,
 95 │         'credits' => $startingCredits,
 96 │         'experience' => 0,
 97 │         'level' => 1,
@@ -324,7 +324,7 @@ Lines 35-79: Validation
 110│     $chartService = app(StarChartService::class);
 111│     $chartsGranted = $chartService->grantStartingCharts($player);
 112│
-113│     $this->info("Player '{$callSign}' initialized successfully!");
+113│     $this->info("Player '{$companyName}' initialized successfully!");
 ```
 
 ---
@@ -335,7 +335,7 @@ Lines 35-79: Validation
 
 ```php
 // Proposed: PlayerSpawnService::createPlayerAtSpawnLocation()
-public function createPlayerAtSpawnLocation(User $user, Galaxy $galaxy, string $callSign): Player
+public function createPlayerAtSpawnLocation(User $user, Galaxy $galaxy, string $companyName): Player
 {
     // Step 1: Find optimal spawn location
     $startingLocation = $this->findOptimalSpawnLocation($galaxy);
@@ -368,13 +368,13 @@ public function createPlayerAtSpawnLocation(User $user, Galaxy $galaxy, string $
 **Usage would become:**
 ```php
 // GalaxyController.join()
-$player = $spawnService->createPlayerAtSpawnLocation($user, $galaxy, $validated['call_sign']);
+$player = $spawnService->createPlayerAtSpawnLocation($user, $galaxy, $validated['company_name']);
 
 // PlayerController.store()
-$player = $spawnService->createPlayerAtSpawnLocation($request->user(), $galaxy, $validated['call_sign']);
+$player = $spawnService->createPlayerAtSpawnLocation($request->user(), $galaxy, $validated['company_name']);
 
 // InitializePlayerCommand
-$player = $spawnService->createPlayerAtSpawnLocation($user, $galaxy, $callSign);
+$player = $spawnService->createPlayerAtSpawnLocation($user, $galaxy, $companyName);
 ```
 
 All three would be identical internally, eliminating duplication and ensuring consistency.

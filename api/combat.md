@@ -795,7 +795,7 @@ Issue a PvP combat challenge to another player.
       "uuid": "150e8400-e29b-41d4-a716-446655440000",
       "target": {
         "uuid": "450e8400-e29b-41d4-a716-446655440000",
-        "call_sign": "StarLord_42"
+        "company_name": "StarLord_42"
       },
       "message": "Your reputation precedes you. Let's settle this in honorable combat!",
       "wager_credits": 50000,
@@ -817,7 +817,7 @@ Issue a PvP combat challenge to another player.
 | `challenge.uuid` | string | UUID of the created challenge |
 | `challenge.target` | object | Information about the challenged player |
 | `challenge.target.uuid` | string | UUID of the target player |
-| `challenge.target.call_sign` | string | Call sign of the target player |
+| `challenge.target.company_name` | string | Company name of the target player |
 | `challenge.message` | string | Challenge message |
 | `challenge.wager_credits` | integer | Wagered credits |
 | `challenge.expires_at` | string | ISO 8601 timestamp when challenge expires |
@@ -875,7 +875,7 @@ Get all pending PvP challenges for a player (incoming and outgoing).
         "type": "incoming",
         "challenger": {
           "uuid": "350e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "SpaceAce_99"
+          "company_name": "SpaceAce_99"
         },
         "message": "I challenge you to a duel!",
         "wager_credits": 25000,
@@ -888,7 +888,7 @@ Get all pending PvP challenges for a player (incoming and outgoing).
         "type": "outgoing",
         "target": {
           "uuid": "450e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "StarLord_42"
+          "company_name": "StarLord_42"
         },
         "message": "Let's settle this!",
         "wager_credits": 50000,
@@ -960,12 +960,12 @@ Accept a PvP challenge and immediately engage in combat.
     "result": {
       "victor": {
         "uuid": "150e8400-e29b-41d4-a716-446655440000",
-        "call_sign": "SpaceAce"
+        "company_name": "SpaceAce"
       },
       "victor_hull_remaining": 850,
       "loser": {
         "uuid": "250e8400-e29b-41d4-a716-446655440000",
-        "call_sign": "RivalPilot"
+        "company_name": "RivalPilot"
       },
       "rounds": 5,
       "xp_earned": 500,
@@ -1001,11 +1001,11 @@ Accept a PvP challenge and immediately engage in combat.
 | `combat_session.uuid` | string | UUID of the created combat session |
 | `result.victor` | object | Player who won the combat |
 | `result.victor.uuid` | string | UUID of the victor |
-| `result.victor.call_sign` | string | Call sign of the victor |
+| `result.victor.company_name` | string | Company name of the victor |
 | `result.victor_hull_remaining` | integer | Hull points remaining for the victor |
 | `result.loser` | object | Player who lost the combat |
 | `result.loser.uuid` | string | UUID of the loser |
-| `result.loser.call_sign` | string | Call sign of the loser |
+| `result.loser.company_name` | string | Company name of the loser |
 | `result.rounds` | integer | Number of combat rounds |
 | `result.xp_earned` | integer | Experience points earned by the victor |
 | `result.credits_earned` | integer | Credits earned by the victor (from wager) |
@@ -1176,7 +1176,7 @@ Get detailed information about a completed combat session.
         {
           "player": {
             "uuid": "150e8400-e29b-41d4-a716-446655440000",
-            "call_sign": "SpaceAce"
+            "company_name": "SpaceAce"
           },
           "side": "attacker",
           "starting_hull": 1000,
@@ -1190,7 +1190,7 @@ Get detailed information about a completed combat session.
         {
           "player": {
             "uuid": "250e8400-e29b-41d4-a716-446655440000",
-            "call_sign": "RivalPilot"
+            "company_name": "RivalPilot"
           },
           "side": "defender",
           "starting_hull": 1200,
@@ -1299,7 +1299,7 @@ Invite another player to join your side in a PvP challenge.
       "id": 42,
       "invitee": {
         "uuid": "350e8400-e29b-41d4-a716-446655440000",
-        "call_sign": "AllyPilot"
+        "company_name": "AllyPilot"
       },
       "side": "attacker",
       "status": "pending"
@@ -1320,7 +1320,7 @@ Invite another player to join your side in a PvP challenge.
 | `invitation.id` | integer | ID of the team invitation |
 | `invitation.invitee` | object | Player being invited |
 | `invitation.invitee.uuid` | string | UUID of the invitee |
-| `invitation.invitee.call_sign` | string | Call sign of the invitee |
+| `invitation.invitee.company_name` | string | Company name of the invitee |
 | `invitation.side` | string | Side the invitee will join (attacker, defender) |
 | `invitation.status` | string | Invitation status (pending) |
 
@@ -1372,18 +1372,18 @@ Get all pending team invitations for a player.
           "uuid": "450e8400-e29b-41d4-a716-446655440000",
           "challenger": {
             "uuid": "150e8400-e29b-41d4-a716-446655440000",
-            "call_sign": "SpaceAce"
+            "company_name": "SpaceAce"
           },
           "target": {
             "uuid": "250e8400-e29b-41d4-a716-446655440000",
-            "call_sign": "RivalPilot"
+            "company_name": "RivalPilot"
           },
           "wager_credits": 10000,
           "expires_at": "2026-02-17T10:30:00+00:00"
         },
         "invited_by": {
           "uuid": "150e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "SpaceAce"
+          "company_name": "SpaceAce"
         },
         "side": "attacker"
       }
@@ -1571,7 +1571,7 @@ Get the current team composition for a challenge.
     "attackers": [
       {
         "uuid": "150e8400-e29b-41d4-a716-446655440000",
-        "call_sign": "SpaceAce",
+        "company_name": "SpaceAce",
         "ship": {
           "name": "USS Enterprise",
           "hull": 1000,
@@ -1580,7 +1580,7 @@ Get the current team composition for a challenge.
       },
       {
         "uuid": "350e8400-e29b-41d4-a716-446655440000",
-        "call_sign": "AllyPilot",
+        "company_name": "AllyPilot",
         "ship": {
           "name": "Millennium Falcon",
           "hull": 900,
@@ -1591,7 +1591,7 @@ Get the current team composition for a challenge.
     "defenders": [
       {
         "uuid": "250e8400-e29b-41d4-a716-446655440000",
-        "call_sign": "RivalPilot",
+        "company_name": "RivalPilot",
         "ship": {
           "name": "Imperial Destroyer",
           "hull": 1200,
@@ -1621,7 +1621,7 @@ Get the current team composition for a challenge.
 | `challenge.expires_at` | string | ISO 8601 timestamp of expiration |
 | `attackers` | array | Array of players on the attacking team |
 | `attackers[].uuid` | string | Player UUID |
-| `attackers[].call_sign` | string | Player call sign |
+| `attackers[].company_name` | string | Player's company name |
 | `attackers[].ship` | object/null | Active ship details, null if no ship |
 | `attackers[].ship.name` | string | Ship name |
 | `attackers[].ship.hull` | integer | Ship hull level |
@@ -1677,14 +1677,14 @@ Accept a team challenge and start team combat.
       "victors": [
         {
           "uuid": "150e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "SpaceAce",
+          "company_name": "SpaceAce",
           "hull_remaining": 850,
           "xp_earned": 500,
           "credits_earned": 10000
         },
         {
           "uuid": "350e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "AllyPilot",
+          "company_name": "AllyPilot",
           "hull_remaining": 650,
           "xp_earned": 500,
           "credits_earned": 10000
@@ -1693,7 +1693,7 @@ Accept a team challenge and start team combat.
       "losers": [
         {
           "uuid": "250e8400-e29b-41d4-a716-446655440000",
-          "call_sign": "RivalPilot",
+          "company_name": "RivalPilot",
           "hull_remaining": 0,
           "survived": false
         }
@@ -1734,13 +1734,13 @@ Accept a team challenge and start team combat.
 | `result.victor_team` | string | Winning team (attackers or defenders) |
 | `result.victors` | array | Array of all victorious players |
 | `victors[].uuid` | string | Player UUID |
-| `victors[].call_sign` | string | Player call sign |
+| `victors[].company_name` | string | Player's company name |
 | `victors[].hull_remaining` | integer | Hull remaining after combat |
 | `victors[].xp_earned` | integer | Experience points earned |
 | `victors[].credits_earned` | integer | Credits earned from wager |
 | `result.losers` | array | Array of all defeated players |
 | `losers[].uuid` | string | Player UUID |
-| `losers[].call_sign` | string | Player call sign |
+| `losers[].company_name` | string | Player's company name |
 | `losers[].hull_remaining` | integer | Hull remaining (usually 0) |
 | `losers[].survived` | boolean | Whether the player survived |
 | `result.rounds` | integer | Number of combat rounds |

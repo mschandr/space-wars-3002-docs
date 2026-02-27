@@ -1178,7 +1178,7 @@ Retrieve defense information for a colony, including defensive structures and ga
       "name": "New Terra",
       "owner": {
         "uuid": "350e8400-e29b-41d4-a716-446655440020",
-        "call_sign": "Commander Alpha"
+        "company_name": "Commander Alpha"
       },
       "development_level": 3,
       "population": 5000,
@@ -1254,11 +1254,11 @@ Initiate a siege on another player's colony. Can include allied players for team
       "name": "New Terra",
       "old_owner": {
         "uuid": "350e8400-e29b-41d4-a716-446655440020",
-        "call_sign": "Commander Alpha"
+        "company_name": "Commander Alpha"
       },
       "new_owner": {
         "uuid": "250e8400-e29b-41d4-a716-446655440023",
-        "call_sign": "Admiral Beta"
+        "company_name": "Admiral Beta"
       }
     }
   },

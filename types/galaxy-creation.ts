@@ -246,7 +246,7 @@ export function getTierConfig(tier: GalaxySizeTier): SizeTierOption | undefined 
  */
 export interface PlayerInfo {
   uuid: string;
-  call_sign: string;
+  company_name: string;
   credits: number;
   experience: number;
   level: number;
@@ -272,8 +272,8 @@ export interface PlayerInfo {
  * Request body for POST /api/galaxies/{uuid}/join
  */
 export interface JoinGalaxyRequest {
-  /** Call sign for new player (required only when creating) */
-  call_sign: string;
+  /** Company name for new player (required only when creating) */
+  company_name: string;
 }
 
 /**
@@ -323,7 +323,7 @@ export type JoinGalaxyErrorCode =
   | 'GALAXY_NOT_ACTIVE'
   | 'GALAXY_FULL'
   | 'SINGLE_PLAYER_GALAXY'
-  | 'DUPLICATE_CALL_SIGN'
+  | 'DUPLICATE_COMPANY_NAME'
   | 'NO_STARTING_LOCATION'
   | 'JOIN_FAILED';
 
@@ -385,7 +385,7 @@ export async function checkPlayerInGalaxy(
  */
 export async function joinGalaxy(
   galaxyUuid: string,
-  callSign: string,
+  companyName: string,
   token: string
 ): Promise<{ player: PlayerInfo; created: boolean }> {
   const response = await fetch(`/api/galaxies/${galaxyUuid}/join`, {
@@ -395,7 +395,7 @@ export async function joinGalaxy(
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json',
     },
-    body: JSON.stringify({ call_sign: callSign }),
+    body: JSON.stringify({ company_name: companyName }),
   });
 
   const result: JoinGalaxyResponse = await response.json();
@@ -458,19 +458,19 @@ if (result.success) {
 // Usage - Check Player Membership
 const existingPlayer = await checkPlayerInGalaxy(galaxyUuid, token);
 if (existingPlayer) {
-  console.log(`You have a player: ${existingPlayer.call_sign}`);
+  console.log(`You have a player: ${existingPlayer.company_name}`);
 } else {
   console.log('You need to join this galaxy first');
 }
 
 // Usage - Join Galaxy (idempotent)
 try {
-  const { player, created } = await joinGalaxy(galaxyUuid, 'MyCallSign', token);
+  const { player, created } = await joinGalaxy(galaxyUuid, 'MyCompanyName', token);
 
   if (created) {
-    console.log(`Welcome aboard, ${player.call_sign}!`);
+    console.log(`Welcome aboard, ${player.company_name}!`);
   } else {
-    console.log(`Welcome back, ${player.call_sign}!`);
+    console.log(`Welcome back, ${player.company_name}!`);
   }
 
   // Navigate to game
@@ -481,8 +481,8 @@ try {
     case 'GALAXY_FULL':
       alert('This galaxy is full!');
       break;
-    case 'DUPLICATE_CALL_SIGN':
-      alert('That call sign is taken. Try another.');
+    case 'DUPLICATE_COMPANY_NAME':
+      alert('That company name is taken. Try another.');
       break;
     case 'SINGLE_PLAYER_GALAXY':
       alert('This is a private galaxy.');

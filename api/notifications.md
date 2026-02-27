@@ -70,7 +70,7 @@ GET /api/players/550e8400-e29b-41d4-a716-446655440000/notifications?read=false&t
   "data": {
     "player": {
       "uuid": "550e8400-e29b-41d4-a716-446655440000",
-      "call_sign": "Maverick"
+      "company_name": "Maverick"
     },
     "total_notifications": 15,
     "unread_count": 8,
@@ -120,7 +120,7 @@ GET /api/players/550e8400-e29b-41d4-a716-446655440000/notifications?read=false&t
 | Field | Type | Description |
 |-------|------|-------------|
 | `player.uuid` | string | Player's unique identifier |
-| `player.call_sign` | string | Player's call sign (display name) |
+| `player.company_name` | string | Player's company name (display name) |
 | `total_notifications` | integer | Total number of notifications returned (respects limit parameter) |
 | `unread_count` | integer | Total count of ALL unread notifications for this player (ignores filters and limit) |
 | `notifications` | array | Array of notification objects |
@@ -205,7 +205,7 @@ GET /api/players/550e8400-e29b-41d4-a716-446655440000/notifications/unread
   "data": {
     "player": {
       "uuid": "550e8400-e29b-41d4-a716-446655440000",
-      "call_sign": "Maverick"
+      "company_name": "Maverick"
     },
     "total_unread": 8,
     "unread_by_type": {
@@ -228,7 +228,7 @@ GET /api/players/550e8400-e29b-41d4-a716-446655440000/notifications/unread
 | Field | Type | Description |
 |-------|------|-------------|
 | `player.uuid` | string | Player's unique identifier |
-| `player.call_sign` | string | Player's call sign (display name) |
+| `player.company_name` | string | Player's company name (display name) |
 | `total_unread` | integer | Total count of all unread notifications |
 | `unread_by_type` | object | Key-value pairs where keys are notification types and values are counts |
 

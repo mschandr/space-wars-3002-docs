@@ -1105,6 +1105,124 @@ Get all components currently installed on the player's active ship.
 
 ---
 
+### Component Comparison
+
+**GET** `/api/players/{uuid}/component-comparison`
+
+Compare an incoming salvage yard component against the currently installed one before purchasing.
+
+**Authentication:** Required (must own player)
+
+**Parameters:**
+
+| Parameter | Type | Required | Location | Description |
+|-----------|------|----------|----------|-------------|
+| uuid | string | Yes | Path | Player UUID |
+| incoming_inventory_id | integer | Yes | Query | Salvage yard inventory ID |
+| ship_uuid | string | Yes | Query | Ship UUID |
+| slot_index | integer | Yes | Query | Target slot index (1-based) |
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "current": {
+      "name": "Pulse Laser MK-I",
+      "rarity": "common",
+      "condition": 72,
+      "upgrade_level": 0,
+      "effects": {
+        "damage": 10,
+        "fire_rate": 1.5
+      },
+      "effective_effects": {
+        "damage": 7.2,
+        "fire_rate": 1.08
+      }
+    },
+    "incoming": {
+      "name": "Pulse Laser MK-II",
+      "rarity": "uncommon",
+      "condition": 95,
+      "price": 3200.0,
+      "effects": {
+        "damage": 15,
+        "fire_rate": 1.8
+      },
+      "effective_effects": {
+        "damage": 15,
+        "fire_rate": 1.8
+      }
+    },
+    "diff": {
+      "damage": {
+        "current": 7.2,
+        "incoming": 15.0,
+        "delta": 7.8,
+        "direction": "up"
+      },
+      "fire_rate": {
+        "current": 1.08,
+        "incoming": 1.8,
+        "delta": 0.72,
+        "direction": "up"
+      }
+    },
+    "swap_sale_preview": {
+      "base_sell_pct": 0.5,
+      "crew_negotiation_bonus": 0.0312,
+      "effective_sell_pct": 0.5312,
+      "estimated_credits": 1250,
+      "negotiated_by": {
+        "role": "quartermaster",
+        "name": "Bex Tanaka",
+        "luck": 0.78
+      }
+    }
+  },
+  "message": "",
+  "meta": {
+    "timestamp": "2026-02-16T10:30:00Z",
+    "request_id": "abc-123-def-456"
+  }
+}
+```
+
+**Response Fields:**
+
+- `current` (object|null): Currently installed component at the target slot (null if slot is empty)
+  - `name` (string): Component name
+  - `rarity` (string): Rarity tier (common, uncommon, rare, epic, legendary)
+  - `condition` (integer): Current condition (0-100)
+  - `upgrade_level` (integer): Applied upgrade level
+  - `effects` (object): Base stat effects
+  - `effective_effects` (object): Stat effects adjusted for condition and upgrades
+- `incoming` (object): The salvage yard component being considered
+  - `name` (string): Component name
+  - `rarity` (string): Rarity tier
+  - `condition` (integer): Condition at time of purchase
+  - `price` (float): Current asking price
+  - `effects` (object): Base stat effects
+  - `effective_effects` (object): Stat effects (no degradation for new components)
+- `diff` (object): Per-stat comparison between current and incoming effective effects
+  - Each stat key contains `current`, `incoming`, `delta`, and `direction` (`up`, `down`, or `same`)
+- `swap_sale_preview` (object|null): Estimated credit return if the current component is auto-sold during swap (null if slot is empty)
+  - `base_sell_pct` (float): Base sell percentage from config
+  - `crew_negotiation_bonus` (float): Bonus percentage from crew negotiation
+  - `effective_sell_pct` (float): Total sell percentage (base + crew bonus)
+  - `estimated_credits` (integer): Estimated credits returned
+  - `negotiated_by` (object|null): Crew member providing the negotiation bonus (null if no applicable crew)
+
+**Error Responses:**
+
+- `403 Forbidden`: Not authorized
+- `404 Not Found`: Player, ship, or inventory item not found
+- `422 Unprocessable Entity`: Validation error (missing or invalid parameters)
+
+---
+
 ### Purchase Component
 
 **POST** `/api/players/{uuid}/salvage-yard/purchase`
@@ -1139,7 +1257,9 @@ Purchase and install a component from the salvage yard.
   "success": true,
   "data": {
     "component_id": 55,
-    "credits_remaining": 8500
+    "credits_remaining": 8500,
+    "crew_discount": 0.0312,
+    "swap_credits": 1250
   },
   "message": "Pulse Laser MK-II installed in weapon slot 3.",
   "meta": {
@@ -1149,11 +1269,20 @@ Purchase and install a component from the salvage yard.
 }
 ```
 
+**Response Fields:**
+
+- `component_id` (integer): ID of the newly installed component
+- `credits_remaining` (integer): Player credits after purchase
+- `crew_discount` (float): Negotiation discount applied by crew member (0.0 if no applicable crew). Formula: `role_max_discount * crew.luck * crew.experience`. Best applicable crew member is used.
+- `swap_credits` (integer): Credits received from auto-selling the replaced component (0 if slot was empty or component is not a core type). Formula: `base_price * (base_sell_pct + crew_bonus) * (condition / 100)`
+
 **Warnings:**
-- Slot must be empty (uninstall first if occupied)
+- Crew members assigned to the ship can negotiate discounts on component purchases based on their role, luck, and experience
+- When replacing an occupied core slot (engine, reactor, cargo, fuel_tank), the old component is auto-sold and credits are returned
 - Player must be at the trading hub
 - Component requirements must be met
 - Inventory quantity decremented after purchase
+- See [Crew System](crew.md) for crew negotiation discount details
 
 **Error Responses:**
 
@@ -1863,7 +1992,7 @@ List all orbital structures at a specific planet or moon.
       },
       "player": {
         "uuid": "player-uuid",
-        "call_sign": "CommanderAlpha"
+        "company_name": "CommanderAlpha"
       }
     }
   ],
@@ -1983,7 +2112,7 @@ Build a new orbital structure at a planet or moon.
     },
     "player": {
       "uuid": "player-uuid",
-      "call_sign": "CommanderAlpha"
+      "company_name": "CommanderAlpha"
     }
   },
   "message": "Construction of Mining Platform has begun",
@@ -2060,7 +2189,7 @@ Get detailed information about a specific orbital structure.
     },
     "player": {
       "uuid": "player-uuid",
-      "call_sign": "CommanderAlpha"
+      "company_name": "CommanderAlpha"
     }
   },
   "message": "Orbital structure retrieved",

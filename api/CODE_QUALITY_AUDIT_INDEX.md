@@ -258,7 +258,7 @@ grep -r "Artisan::call" app/Services app/Jobs --include="*.php"
 ```bash
 curl -X POST http://localhost/api/players \
   -H "Authorization: Bearer TOKEN" \
-  -d '{"galaxy_id": 1, "call_sign": "TestPlayer"}'
+  -d '{"galaxy_id": 1, "company_name": "TestPlayer"}'
 # Verify player has star charts (3+ expected)
 ```
 

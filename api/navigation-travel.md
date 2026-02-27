@@ -19,6 +19,7 @@ Complete API documentation for navigation, travel, location queries, and star sy
    - [Travel via Warp Gate](#travel-via-warp-gate)
    - [Jump to Coordinates](#jump-to-coordinates)
    - [Direct Jump to Hub](#direct-jump-to-hub)
+   - [Crew Pay on Travel](#crew-pay-on-travel)
 3. [Travel Calculations](#travel-calculations)
    - [Calculate Fuel Cost](#calculate-fuel-cost)
    - [Preview XP](#preview-xp)
@@ -283,7 +284,7 @@ Get all orbital bodies (planets, moons, asteroid belts, stations) within the cur
                 "status": "operational",
                 "owner": {
                   "uuid": "ee0e8400-e29b-41d4-a716-446655440000",
-                  "call_sign": "CommanderX"
+                  "company_name": "CommanderX"
                 }
               }
             ],
@@ -562,6 +563,19 @@ Execute travel through a warp gate. Gates are bidirectional and provide efficien
       "captain_name": "Dread Pirate Roberts",
       "fleet_size": 3,
       "threat_level": "medium"
+    },
+    "crew_pay": {
+      "total_deducted": 6.18,
+      "breakdown": [
+        {
+          "crew_uuid": "a1b2c3d4-...",
+          "name": "Brex Olin",
+          "role": "pilot",
+          "base_pay": 3.75,
+          "combat_bonus": 0,
+          "total_pay": 3.75
+        }
+      ]
     }
   }
 }
@@ -575,6 +589,9 @@ Execute travel through a warp gate. Gates are bidirectional and provide efficien
 - `new_level`: Player's level after travel
 - `pirate_encounter`: Present only if pirates attacked during travel
   - Encounter resolution handled separately via combat system
+- `crew_pay`: Pay deducted from player credits for assigned crew members after this hop
+  - `total_deducted`: Sum of all crew member payments
+  - `breakdown`: Per-crew-member payment details including role and any combat bonuses
 
 #### Error Responses
 
@@ -642,7 +659,20 @@ Execute a direct jump to specific coordinates without using a warp gate. Has 4x 
       "attributes": {}
     },
     "level_up": false,
-    "new_level": 5
+    "new_level": 5,
+    "crew_pay": {
+      "total_deducted": 6.18,
+      "breakdown": [
+        {
+          "crew_uuid": "a1b2c3d4-...",
+          "name": "Brex Olin",
+          "role": "pilot",
+          "base_pay": 3.75,
+          "combat_bonus": 0,
+          "total_pay": 3.75
+        }
+      ]
+    }
   }
 }
 ```
@@ -652,6 +682,9 @@ Execute a direct jump to specific coordinates without using a warp gate. Has 4x 
 - `xp_earned`: Same as gate travel (max(10, distance × 5))
 - `new_location`: Destination POI (creates new POI if empty space)
 - No pirate encounters on coordinate jumps
+- `crew_pay`: Pay deducted from player credits for assigned crew members after this hop
+  - `total_deducted`: Sum of all crew member payments
+  - `breakdown`: Per-crew-member payment details including role and any combat bonuses
 
 #### Error Responses
 
@@ -712,6 +745,18 @@ Same as [Jump to Coordinates](#jump-to-coordinates) response.
 - Functionally identical to coordinate jump
 - Target POI must exist in player's galaxy
 - Subject to same fuel penalty and range limits as coordinate jumps
+
+---
+
+### Crew Pay on Travel
+
+After each travel event (warp gate hop, coordinate jump, or direct jump to hub), crew pay is automatically deducted from the player's credits. Every crew member assigned to the player's active ship receives their per-hop pay, which includes a base rate determined by their role and any applicable combat bonuses (e.g., if a pirate encounter occurred during the hop).
+
+- If the player has no assigned crew, the `crew_pay` field will still be present with `total_deducted: 0` and an empty `breakdown` array.
+- Crew pay is deducted after fuel consumption and XP rewards are processed.
+- If the player lacks sufficient credits to cover crew pay, travel still succeeds but the player's credit balance may go negative (debt).
+
+See also: [Crew System](crew.md)
 
 ---
 
@@ -1224,7 +1269,7 @@ Get comprehensive information about the player's current star system, including 
           "has_colony": true,
           "owner": {
             "uuid": "1f0e8400-e29b-41d4-a716-446655440000",
-            "call_sign": "Commander Shepard"
+            "company_name": "Commander Shepard"
           }
         }
       ]
@@ -1467,7 +1512,7 @@ Get comprehensive, detailed information about a specific star system including b
           "has_colony": true,
           "owner": {
             "uuid": "260e8400-e29b-41d4-a716-446655440000",
-            "call_sign": "ColonialOne"
+            "company_name": "ColonialOne"
           },
           "moons": 2
         }

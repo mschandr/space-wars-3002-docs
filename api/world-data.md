@@ -457,7 +457,7 @@ List all orbital structures at a specific celestial body (planet/moon).
       },
       "player": {
         "uuid": "6d5c4b3a-2f1e-0d9c-8b7a-6f5e4d3c2b1a",
-        "call_sign": "StarHunter"
+        "company_name": "StarHunter"
       },
       "created_at": "2026-02-10T14:30:00+00:00",
       "updated_at": "2026-02-12T14:30:00+00:00"
@@ -488,7 +488,7 @@ List all orbital structures at a specific celestial body (planet/moon).
       },
       "player": {
         "uuid": "5c4b3a2f-1e0d-9c8b-7a6f-5e4d3c2b1a0d",
-        "call_sign": "DefenderPrime"
+        "company_name": "DefenderPrime"
       },
       "created_at": "2026-02-11T08:00:00+00:00",
       "updated_at": "2026-02-13T08:00:00+00:00"
@@ -560,7 +560,7 @@ Retrieve detailed information about a specific orbital structure.
     },
     "player": {
       "uuid": "6d5c4b3a-2f1e-0d9c-8b7a-6f5e4d3c2b1a",
-      "call_sign": "StarHunter"
+      "company_name": "StarHunter"
     },
     "created_at": "2026-02-10T14:30:00+00:00",
     "updated_at": "2026-02-12T14:30:00+00:00"
@@ -631,7 +631,7 @@ List all orbital structures owned by a specific player.
       },
       "player": {
         "uuid": "6d5c4b3a-2f1e-0d9c-8b7a-6f5e4d3c2b1a",
-        "call_sign": "StarHunter"
+        "company_name": "StarHunter"
       },
       "created_at": "2026-02-10T14:30:00+00:00",
       "updated_at": "2026-02-12T14:30:00+00:00"
@@ -663,7 +663,7 @@ List all orbital structures owned by a specific player.
       },
       "player": {
         "uuid": "6d5c4b3a-2f1e-0d9c-8b7a-6f5e4d3c2b1a",
-        "call_sign": "StarHunter"
+        "company_name": "StarHunter"
       },
       "created_at": "2026-02-15T12:00:00+00:00",
       "updated_at": "2026-02-16T10:00:00+00:00"
@@ -753,7 +753,7 @@ Build a new orbital structure at a planet or moon.
     },
     "player": {
       "uuid": "6d5c4b3a-2f1e-0d9c-8b7a-6f5e4d3c2b1a",
-      "call_sign": "StarHunter"
+      "company_name": "StarHunter"
     },
     "created_at": "2026-02-16T10:30:00+00:00",
     "updated_at": "2026-02-16T10:30:00+00:00"
@@ -872,7 +872,7 @@ Upgrade an orbital structure to the next level (max level 5).
     },
     "player": {
       "uuid": "6d5c4b3a-2f1e-0d9c-8b7a-6f5e4d3c2b1a",
-      "call_sign": "StarHunter"
+      "company_name": "StarHunter"
     },
     "created_at": "2026-02-10T14:30:00+00:00",
     "updated_at": "2026-02-16T10:30:00+00:00"
@@ -1118,7 +1118,7 @@ Full orbital structure object structure (used by all orbital structure endpoints
   },
   "player": {
     "uuid": "6d5c4b3a-2f1e-0d9c-8b7a-6f5e4d3c2b1a",
-    "call_sign": "StarHunter"
+    "company_name": "StarHunter"
   },
   "created_at": "2026-02-10T14:30:00+00:00",
   "updated_at": "2026-02-16T10:30:00+00:00"
@@ -1147,7 +1147,7 @@ Full orbital structure object structure (used by all orbital structure endpoints
   - **name**: POI name
 - **player**: Owner information
   - **uuid**: Player UUID
-  - **call_sign**: Player call sign
+  - **company_name**: Player's company name
 - **created_at**: ISO 8601 timestamp when structure was created
 - **updated_at**: ISO 8601 timestamp of last update
 

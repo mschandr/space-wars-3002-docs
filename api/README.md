@@ -2,7 +2,7 @@
 
 **Base URL:** `/api`
 **Authentication:** Bearer Token (Laravel Sanctum) — all endpoints except those marked "public" require `Authorization: Bearer {token}`
-**Total Endpoints:** ~150+
+**Total Endpoints:** ~165+
 
 ## Documentation Index
 
@@ -20,6 +20,8 @@
 | [scanning-exploration.md](scanning-exploration.md) | Scanning & Exploration | 5 | System scans, scan results, exploration log, bulk scan levels, system data |
 | [world-data.md](world-data.md) | World Data | 5 | POI types (all, by category, habitable, mineable), individual type lookup |
 | [leaderboards-victory.md](leaderboards-victory.md) | Leaderboards & Victory | 9 | Overall/combat/economic/colonial rankings, player stats, victory conditions, progress |
+| [crew.md](crew.md) | Crew System | 7 | Hire, fire, assign, unassign crew; ship persona |
+| [jump-plans.md](jump-plans.md) | Jump Plans | 4 | Multi-hop route planning, execute hops, pirate interruption |
 | [jump-bookmarks.md](jump-bookmarks.md) | Jump Bookmarks | 4 | List, create, update, delete player navigation bookmarks |
 | [notifications.md](notifications.md) | Notifications | 6 | List, read, mark all read, clear read, delete, unread count |
 | [pirate-factions.md](pirate-factions.md) | Pirate Factions | 4 | Faction list, details, captains, player reputation |
@@ -123,3 +125,5 @@ All entity identifiers use UUIDs (v4). When a route parameter says `{uuid}`, `{p
 - **Lazy Generation**: Shipyard and salvage yard inventories are generated on first player visit and persist thereafter.
 - **Fuel Regeneration**: Ship fuel regenerates passively over time. Many endpoints auto-trigger regeneration before returning fuel data.
 - **Rarity Tiers**: Ships and components use 6 tiers: common, uncommon, rare, epic, unique, exotic.
+- **Company & Crew**: Players are company owners who hire crew members. Crew provide ship persona, negotiation discounts, and are paid per travel hop.
+- **Jump Plans**: Multi-hop route planning combining warp gate and coordinate jumps. Plans are executed step-by-step and can be interrupted by pirates.

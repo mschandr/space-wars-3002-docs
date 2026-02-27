@@ -108,7 +108,7 @@ None
     {
       "id": 1,
       "uuid": "player-uuid-v4",
-      "call_sign": "SpaceTrader",
+      "company_name": "SpaceTrader",
       "credits": 10000.0,
       "experience": 250,
       "level": 2,
@@ -154,7 +154,7 @@ None
 **Field Descriptions:**
 - `id`: Internal database ID (integer)
 - `uuid`: Public UUID identifier (use this for API calls)
-- `call_sign`: Player's chosen name/handle (max 50 characters, unique per galaxy)
+- `company_name`: Player's company name (max 50 characters, unique per galaxy)
 - `credits`: Player's current currency balance (float)
 - `experience`: Total XP accumulated
 - `level`: Current player level (calculated from XP)
@@ -189,13 +189,13 @@ Create a new player in a specified galaxy.
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | galaxy_id | integer | Yes | Database ID of the galaxy (not UUID) |
-| call_sign | string | Yes | Player's name/handle (max 50 characters) |
+| company_name | string | Yes | Player's company name (max 50 characters) |
 
 **Request Body Example:**
 ```json
 {
   "galaxy_id": 7,
-  "call_sign": "SpaceTrader"
+  "company_name": "SpaceTrader"
 }
 ```
 
@@ -210,7 +210,7 @@ Create a new player in a specified galaxy.
   "data": {
     "id": 1,
     "uuid": "player-uuid-v4",
-    "call_sign": "SpaceTrader",
+    "company_name": "SpaceTrader",
     "credits": 10000.0,
     "experience": 0,
     "level": 1,
@@ -261,7 +261,7 @@ Create a new player in a specified galaxy.
 - Starting credits determined by `config('game_config.ships.starting_credits')`, defaults to 10,000
 - Starting location is randomly selected from inhabited star systems in the galaxy
 - Player automatically receives a Scout-class ship as starting vessel
-- Initial ship is named "{call_sign}'s Scout"
+- Initial ship is named "{company_name}'s Scout"
 - Ship stats are copied from the Scout blueprint's base values
 - Player starts at level 1 with 0 XP
 - Status is set to "active" by default
@@ -272,17 +272,17 @@ Create a new player in a specified galaxy.
 |-------------|------------|-------------|
 | 401 | UNAUTHENTICATED | No valid authentication token provided |
 | 422 | VALIDATION_ERROR | Invalid input (see error.errors for details) |
-| 422 | DUPLICATE_CALL_SIGN | Call sign already exists in this galaxy |
+| 422 | DUPLICATE_COMPANY_NAME | Company name already exists in this galaxy |
 | 400 | NO_STARTING_LOCATION | Galaxy has no inhabited systems for spawning |
 | 400 | PLAYER_CREATION_FAILED | Database transaction failed (see message for details) |
 
 **Validation Errors:**
 - `galaxy_id`: Must be a valid galaxy database ID
-- `call_sign`: Required, string, max 50 characters
+- `company_name`: Required, string, max 50 characters
 
 **Warnings & Caveats:**
 - **KNOWN ISSUE:** This endpoint accepts `galaxy_id` as an integer database ID, inconsistent with other endpoints that use UUIDs. Future versions may deprecate this in favor of `galaxy_uuid`.
-- **KNOWN ISSUE:** Call sign validation lacks minimum length, character set restrictions (alphanumeric + underscore), and proper uniqueness validation at the database level.
+- **KNOWN ISSUE:** Company name validation lacks minimum length, character set restrictions (alphanumeric + underscore), and proper uniqueness validation at the database level.
 - **TODO:** Players should receive 3 free star charts to nearest inhabited systems upon creation (not yet implemented).
 - Uses database transactions to ensure atomic creation (player + ship + future star charts).
 - If Scout ship blueprint is missing from database, player will be created without a ship.
@@ -313,7 +313,7 @@ Get detailed information about a specific player.
   "data": {
     "id": 1,
     "uuid": "player-uuid-v4",
-    "call_sign": "SpaceTrader",
+    "company_name": "SpaceTrader",
     "credits": 15750.5,
     "experience": 450,
     "level": 3,
@@ -387,7 +387,7 @@ Get detailed information about a specific player.
 
 ### PATCH /api/players/{uuid}
 
-Update player details (currently only call sign).
+Update player details (currently only company name).
 
 **Authentication Required:** Yes
 
@@ -401,12 +401,12 @@ Update player details (currently only call sign).
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| call_sign | string | No | New call sign (max 50 characters) |
+| company_name | string | No | New company name (max 50 characters) |
 
 **Request Body Example:**
 ```json
 {
-  "call_sign": "NewName"
+  "company_name": "NewName"
 }
 ```
 
@@ -421,7 +421,7 @@ Update player details (currently only call sign).
   "data": {
     "id": 1,
     "uuid": "player-uuid-v4",
-    "call_sign": "NewName",
+    "company_name": "NewName",
     "credits": 15750.5,
     "experience": 450,
     "level": 3,
@@ -447,14 +447,14 @@ Update player details (currently only call sign).
 | 401 | UNAUTHENTICATED | No valid authentication token provided |
 | 404 | NOT_FOUND | Player not found or doesn't belong to authenticated user |
 | 422 | VALIDATION_ERROR | Invalid input (see error.errors for details) |
-| 422 | DUPLICATE_CALL_SIGN | Call sign already exists in this galaxy |
+| 422 | DUPLICATE_COMPANY_NAME | Company name already exists in this galaxy |
 
 **Warnings & Caveats:**
-- Only `call_sign` is currently updatable via this endpoint
-- Call sign must be unique within the galaxy
+- Only `company_name` is currently updatable via this endpoint
+- Company name must be unique within the galaxy
 - Uniqueness check excludes the current player
 - Ownership is enforced: users can only update their own players
-- No-op if call_sign is not provided (returns success without changes)
+- No-op if company_name is not provided (returns success without changes)
 
 ---
 
@@ -526,7 +526,7 @@ Set a player as the active player for the authenticated user.
   "data": {
     "id": 1,
     "uuid": "player-uuid-v4",
-    "call_sign": "SpaceTrader",
+    "company_name": "SpaceTrader",
     "credits": 15750.5,
     "experience": 450,
     "level": 3,
@@ -584,7 +584,7 @@ Get real-time player status snapshot (location, ship, basic stats).
   "data": {
     "player": {
       "uuid": "player-uuid-v4",
-      "call_sign": "SpaceTrader",
+      "company_name": "SpaceTrader",
       "level": 3,
       "credits": 15750.5,
       "experience": 450,
@@ -619,7 +619,7 @@ Get real-time player status snapshot (location, ship, basic stats).
 
 **player:**
 - `uuid`: Player's unique identifier
-- `call_sign`: Player's name/handle
+- `company_name`: Player's company name
 - `level`: Current player level
 - `credits`: Currency balance (float)
 - `experience`: Total XP
@@ -680,7 +680,7 @@ Get comprehensive player statistics (progression, economy, exploration, mirror u
   "data": {
     "player_info": {
       "uuid": "player-uuid-v4",
-      "call_sign": "SpaceTrader",
+      "company_name": "SpaceTrader",
       "level": 3,
       "experience": 450,
       "next_level_xp": 900,
@@ -712,7 +712,7 @@ Get comprehensive player statistics (progression, economy, exploration, mirror u
 
 **player_info:**
 - `uuid`: Player's unique identifier
-- `call_sign`: Player's name/handle
+- `company_name`: Player's company name
 - `level`: Current player level
 - `experience`: Total XP accumulated
 - `next_level_xp`: XP required for next level (formula: `level^2 * 100`)
@@ -749,7 +749,7 @@ Get comprehensive player statistics (progression, economy, exploration, mirror u
 
 ### PATCH /api/players/{uuid}/settings
 
-Update player settings (call sign and/or client preferences).
+Update player settings (company name and/or client preferences).
 
 **Authentication Required:** Yes
 
@@ -763,13 +763,13 @@ Update player settings (call sign and/or client preferences).
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| call_sign | string | No | New call sign (min 2, max 50 characters) |
+| company_name | string | No | New company name (min 2, max 50 characters) |
 | settings | object | No | JSON object for client-side preferences (merged with existing) |
 
 **Request Body Example:**
 ```json
 {
-  "call_sign": "NewName",
+  "company_name": "NewName",
   "settings": {
     "ui_theme": "dark",
     "sound_enabled": true,
@@ -793,7 +793,7 @@ Update player settings (call sign and/or client preferences).
   "data": {
     "id": 1,
     "uuid": "player-uuid-v4",
-    "call_sign": "NewName",
+    "company_name": "NewName",
     "credits": 15750.5,
     "experience": 450,
     "level": 3,
@@ -820,14 +820,14 @@ Update player settings (call sign and/or client preferences).
 | 403 | FORBIDDEN | Player does not belong to authenticated user |
 | 404 | NOT_FOUND | Player not found |
 | 422 | VALIDATION_ERROR | Invalid input (see error.errors for details) |
-| 422 | DUPLICATE_CALL_SIGN | Call sign already exists in this galaxy |
+| 422 | DUPLICATE_COMPANY_NAME | Company name already exists in this galaxy |
 
 **Validation Rules:**
-- `call_sign`: Optional, string, minimum 2 characters, maximum 50 characters
+- `company_name`: Optional, string, minimum 2 characters, maximum 50 characters
 - `settings`: Optional, must be a valid JSON object/array
 
 **Field Descriptions:**
-- `call_sign`: Updated name/handle (must be unique within galaxy)
+- `company_name`: Updated company name (must be unique within galaxy)
 - `settings`: Client-side preferences stored as JSON blob
   - Settings are **merged** with existing settings (not replaced entirely)
   - Allows incremental updates without losing previous settings
@@ -842,13 +842,13 @@ Update player settings (call sign and/or client preferences).
 | 403 | FORBIDDEN | Player does not belong to authenticated user |
 | 404 | NOT_FOUND | Player not found |
 | 422 | VALIDATION_ERROR | Invalid input (see error.errors for details) |
-| 422 | DUPLICATE_CALL_SIGN | Call sign already exists in this galaxy |
+| 422 | DUPLICATE_COMPANY_NAME | Company name already exists in this galaxy |
 
 **Warnings & Caveats:**
 - **Settings merge behavior:** Existing settings are merged with new settings, not replaced
 - Example: If existing settings are `{"theme": "light", "sound": true}` and you send `{"theme": "dark"}`, result will be `{"theme": "dark", "sound": true}`
 - No schema validation on settings object - client is responsible for data structure
-- Call sign validation includes minimum length (2 chars) unlike the basic PATCH endpoint
+- Company name validation includes minimum length (2 chars) unlike the basic PATCH endpoint
 - Ownership is strictly enforced via explicit check (returns 403 FORBIDDEN instead of 404)
 - Returns full PlayerResource after update (includes all relations)
 
@@ -1180,7 +1180,7 @@ Knowledge sources ranked by freshness:
 | FORBIDDEN | 403 | User does not own the requested resource |
 | NOT_FOUND | 404 | Resource not found or user lacks access |
 | VALIDATION_ERROR | 422 | Request validation failed (see error.errors) |
-| DUPLICATE_CALL_SIGN | 422 | Call sign already exists in galaxy |
+| DUPLICATE_COMPANY_NAME | 422 | Company name already exists in galaxy |
 | NO_STARTING_LOCATION | 400 | Galaxy has no suitable spawn points |
 | PLAYER_CREATION_FAILED | 400 | Database error during player creation |
 | NO_LOCATION | 400 | Player has no current location set |
@@ -1209,7 +1209,7 @@ Knowledge sources ranked by freshness:
 
 ### Known Issues & TODOs
 - `POST /api/players` uses integer `galaxy_id` instead of UUID (inconsistent with other endpoints)
-- `POST /api/players` lacks proper call_sign validation (no min length, no regex, no DB-level uniqueness)
+- `POST /api/players` lacks proper company_name validation (no min length, no regex, no DB-level uniqueness)
 - `POST /api/players/{uuid}/set-active` is a stub (doesn't actually track active player state)
 - `POST /api/players` doesn't grant starter star charts (mentioned in TODO comment)
 - Settings field has no schema validation (completely freeform JSON)
@@ -1226,7 +1226,7 @@ curl -X POST https://api.spacewars3002.com/api/players \
   -H "Content-Type: application/json" \
   -d '{
     "galaxy_id": 1,
-    "call_sign": "SpaceCowboy"
+    "company_name": "SpaceCowboy"
   }'
 ```
 

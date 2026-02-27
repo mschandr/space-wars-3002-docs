@@ -39,13 +39,13 @@ Add new public method after `ensureStarterShipAvailable()` (after line 582):
 public function createPlayerAtSpawnLocation(
     User $user,
     Galaxy $galaxy,
-    string $callSign
+    string $companyName
 ): Player {
-    // Validate call sign is unique within galaxy
+    // Validate company name is unique within galaxy
     if (Player::where('galaxy_id', $galaxy->id)
-        ->where('call_sign', $callSign)
+        ->where('company_name', $companyName)
         ->exists()) {
-        throw new \Exception("Call sign '{$callSign}' already exists in this galaxy");
+        throw new \Exception("Company name '{$companyName}' already exists in this galaxy");
     }
 
     // Step 1: Find optimal spawn location
@@ -61,7 +61,7 @@ public function createPlayerAtSpawnLocation(
     $player = Player::create([
         'user_id' => $user->id,
         'galaxy_id' => $galaxy->id,
-        'call_sign' => $callSign,
+        'company_name' => $companyName,
         'credits' => $startingCredits,
         'experience' => 0,
         'level' => 1,
@@ -122,7 +122,7 @@ Replace lines 565-668 with:
             $player = $spawnService->createPlayerAtSpawnLocation(
                 $user,
                 $galaxy,
-                $validated['call_sign']
+                $validated['company_name']
             );
 
             DB::commit();
@@ -169,7 +169,7 @@ Replace lines 68-105 with:
             $player = $spawnService->createPlayerAtSpawnLocation(
                 $request->user(),
                 $galaxy,
-                $validated['call_sign']
+                $validated['company_name']
             );
 
             DB::commit();
@@ -199,13 +199,13 @@ Optionally refactor to use the new service method (lines 71-104):
 ```php
         // Use unified player creation service
         $spawnService = app(PlayerSpawnService::class);
-        $player = $spawnService->createPlayerAtSpawnLocation($user, $galaxy, $callSign);
+        $player = $spawnService->createPlayerAtSpawnLocation($user, $galaxy, $companyName);
 
         // Get spawn location info for reporting
         $startingLocation = $player->currentLocation;
         $spawnReport = $spawnService->getSpawnLocationReport($startingLocation, $galaxy);
 
-        $this->info("Player '{$callSign}' initialized successfully!");
+        $this->info("Player '{$companyName}' initialized successfully!");
         $this->info("Galaxy: {$galaxy->name}");
         $this->info("Credits: {$player->credits}");
         $this->info('Visit the shipyard to purchase your first ship!');
@@ -223,12 +223,12 @@ Run these commands:
 # Test GalaxyController.join endpoint
 curl -X POST http://localhost/api/galaxies/{uuid}/join \
   -H "Authorization: Bearer {token}" \
-  -d '{"call_sign":"TestPlayer"}'
+  -d '{"company_name":"TestPlayer"}'
 
 # Test PlayerController.store endpoint
 curl -X POST http://localhost/api/players \
   -H "Authorization: Bearer {token}" \
-  -d '{"galaxy_id": 1, "call_sign":"TestPlayer2"}'
+  -d '{"galaxy_id": 1, "company_name":"TestPlayer2"}'
 
 # Test CLI command
 php artisan player:init {galaxy_id} {user_id} "TestPlayer3"
@@ -569,11 +569,11 @@ php artisan test
 # Verify all PlayerController features work
 curl -X POST http://localhost/api/players \
   -H "Authorization: Bearer {token}" \
-  -d '{"galaxy_id": 1, "call_sign":"FinalTest"}'
+  -d '{"galaxy_id": 1, "company_name":"FinalTest"}'
 
 # Verify player has star charts
 SELECT player_id, COUNT(*) as chart_count FROM player_star_charts
-WHERE player_id = (SELECT id FROM players WHERE call_sign = 'FinalTest')
+WHERE player_id = (SELECT id FROM players WHERE company_name = 'FinalTest')
 GROUP BY player_id;
 # Should show 3+ charts
 ```

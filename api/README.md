@@ -20,6 +20,7 @@
 | [scanning-exploration.md](scanning-exploration.md) | Scanning & Exploration | 5 | System scans, scan results, exploration log, bulk scan levels, system data |
 | [world-data.md](world-data.md) | World Data | 5 | POI types (all, by category, habitable, mineable), individual type lookup |
 | [leaderboards-victory.md](leaderboards-victory.md) | Leaderboards & Victory | 9 | Overall/combat/economic/colonial rankings, player stats, victory conditions, progress |
+| [jump-bookmarks.md](jump-bookmarks.md) | Jump Bookmarks | 4 | List, create, update, delete player navigation bookmarks |
 | [notifications.md](notifications.md) | Notifications | 6 | List, read, mark all read, clear read, delete, unread count |
 | [pirate-factions.md](pirate-factions.md) | Pirate Factions | 4 | Faction list, details, captains, player reputation |
 | [special-content.md](special-content.md) | Special Content | 7 | Mirror universe access/entry, precursor rumors/gossip/bribe, market events |

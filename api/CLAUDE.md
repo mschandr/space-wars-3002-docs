@@ -114,8 +114,9 @@ The game is turn-based with players spending limited turns per day. Each action 
 4. Inhabited system designation (33-50% of stars)
 5. Warp gate network generation for inhabited systems only (uninhabited systems remain isolated)
 6. Trading hub distribution (50-80% of inhabited systems)
-7. Pirate distribution on warp lanes
-8. Resource/mineral assignment
+7. Vendor profile generation (one unique vendor per trading hub)
+8. Pirate distribution on warp lanes
+9. Resource/mineral assignment
 
 **Point Generators** (`app/Generators/Points/`): Pluggable system via `PointGeneratorInterface`
 - `PoissonDisk`: Blue noise distribution with minimum spacing
@@ -148,6 +149,9 @@ Selected via `config/game_config.php` → `galaxy.generator` and instantiated vi
 - `Mineral`: Tradable resources with dynamic pricing and scarcity
 - `TradingHub`: Markets for buying/selling minerals
 - `StellarCartographer`: Star chart vendors at inhabited trading hubs (spawn rate ~30%)
+- `VendorProfile`: Unique vendor personality per TradingHub (4 traits as JSON, 9 archetypes)
+- `PlayerVendorRelationship`: Per-player vendor state (markup escalation, goodwill, lockout)
+- `VendorDialogueHistory`: LLM conversation history for vendor dialogue
 - `PirateFaction`/`PirateCaptain`/`PirateFleet`: NPC hostile entities
 
 **Services** (`app/Services/`): Business logic layer
@@ -164,6 +168,9 @@ Selected via `config/game_config.php` → `galaxy.generator` and instantiated vi
 - `PirateEncounterService`: Random pirate encounters based on sector danger
 - `MarketEventService`/`MarketEventGenerator`: Dynamic market price fluctuations
 - `ShipUpgradeService`/`ShipRepairService`: Ship management
+- `VendorProfileService`: Vendor generation, archetype derivation, name pool
+- `VendorNegotiationService`: Pricing (markup + escalation + decay), negotiation rolls, lockout, repair rates
+- `VendorDialogueService`: Ollama LLM dialogue generation with static fallback
 - `StarChartService`: Star chart purchasing, coverage calculation via BFS (2-hop default)
   - Exponential pricing: basePrice * (multiplier ^ unknownCount)
   - Pirate detection with probabilistic accuracy (70-95% based on sensors)

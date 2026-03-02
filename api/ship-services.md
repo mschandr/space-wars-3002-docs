@@ -18,6 +18,8 @@ This document provides comprehensive documentation for all ship service endpoint
 
 ## Ship Repair & Maintenance
 
+> **Vendor-Adjusted Pricing:** Repair costs are adjusted by the vendor at the player's current trading hub. Vendor greed increases the repair rate: `vendor_rate = base_rate * (1 + greed * 0.50)`. See [Vendor Profiles](vendors.md) for details.
+
 ### Get Repair Estimate
 
 **GET** `/api/ships/{uuid}/repair-estimate`
@@ -39,7 +41,7 @@ Get detailed repair cost estimates for a ship including hull damage and downgrad
   "success": true,
   "data": {
     "hull_damage": 45,
-    "hull_repair_cost": 450,
+    "hull_repair_cost": 585,
     "needs_hull_repair": true,
     "downgraded_components": [
       {
@@ -48,12 +50,16 @@ Get detailed repair cost estimates for a ship including hull damage and downgrad
         "current": 5,
         "should_be": 10,
         "deficit": 5,
-        "repair_cost": 250
+        "repair_cost": 325
       }
     ],
-    "component_repair_cost": 250,
+    "component_repair_cost": 325,
     "needs_component_repair": true,
-    "total_repair_cost": 700,
+    "total_repair_cost": 910,
+    "can_negotiate": true,
+    "vendor_rate": 13.0,
+    "base_rate": 10,
+    "vendor_markup_pct": 30.0,
     "hull_percentage": 67.5
   },
   "message": "",
@@ -67,7 +73,7 @@ Get detailed repair cost estimates for a ship including hull damage and downgrad
 **Response Fields:**
 
 - `hull_damage` (integer): Total hull points lost
-- `hull_repair_cost` (integer): Cost to repair hull (10 credits per point)
+- `hull_repair_cost` (float): Cost to repair hull (vendor-adjusted rate per point)
 - `needs_hull_repair` (boolean): Whether hull repair is needed
 - `downgraded_components` (array): List of components below base values
   - `component` (string): Component key (weapons, sensors, etc.)
@@ -75,10 +81,14 @@ Get detailed repair cost estimates for a ship including hull damage and downgrad
   - `current` (integer): Current value
   - `should_be` (integer): Base ship value
   - `deficit` (integer): Points below base
-  - `repair_cost` (integer): Cost to restore (50 credits per level)
-- `component_repair_cost` (integer): Total cost for all component repairs
+  - `repair_cost` (float): Cost to restore (vendor-adjusted multiplier per level)
+- `component_repair_cost` (float): Total cost for all component repairs
 - `needs_component_repair` (boolean): Whether component repair is needed
-- `total_repair_cost` (integer): Combined hull + component repair cost
+- `total_repair_cost` (float): Combined hull + component repair cost
+- `can_negotiate` (boolean): Whether a vendor is present for negotiation
+- `vendor_rate` (float): Current per-point hull repair rate at this vendor
+- `base_rate` (integer): Base repair rate without vendor markup (10 cr/point)
+- `vendor_markup_pct` (float): Vendor's repair markup percentage (e.g., 30.0 = 30%)
 - `hull_percentage` (float): Current hull as percentage of max (0-100)
 
 **Error Responses:**

@@ -20,6 +20,7 @@
 | [scanning-exploration.md](scanning-exploration.md) | Scanning & Exploration | 5 | System scans, scan results, exploration log, bulk scan levels, system data |
 | [world-data.md](world-data.md) | World Data | 5 | POI types (all, by category, habitable, mineable), individual type lookup |
 | [leaderboards-victory.md](leaderboards-victory.md) | Leaderboards & Victory | 9 | Overall/combat/economic/colonial rankings, player stats, victory conditions, progress |
+| [vendors.md](vendors.md) | Vendor Profiles & Negotiation | 2 | Vendor profile, price negotiation, vendor-adjusted pricing across all shops |
 | [crew.md](crew.md) | Crew System | 7 | Hire, fire, assign, unassign crew; ship persona |
 | [jump-plans.md](jump-plans.md) | Jump Plans | 4 | Multi-hop route planning, execute hops, pirate interruption |
 | [jump-bookmarks.md](jump-bookmarks.md) | Jump Bookmarks | 4 | List, create, update, delete player navigation bookmarks |
@@ -125,5 +126,6 @@ All entity identifiers use UUIDs (v4). When a route parameter says `{uuid}`, `{p
 - **Lazy Generation**: Shipyard and salvage yard inventories are generated on first player visit and persist thereafter.
 - **Fuel Regeneration**: Ship fuel regenerates passively over time. Many endpoints auto-trigger regeneration before returning fuel data.
 - **Rarity Tiers**: Ships and components use 6 tiers: common, uncommon, rare, epic, unique, exotic.
-- **Company & Crew**: Players are company owners who hire crew members. Crew provide ship persona, negotiation discounts, and are paid per travel hop.
+- **Vendor Profiles**: Each trading hub has a unique vendor with personality traits that affect pricing. Vendor markup escalates with purchases and decays over time. Players can negotiate prices using crew stats.
+- **Company & Crew**: Players are company owners who hire crew members. Crew provide ship persona, negotiation discounts, and are paid per travel hop. Pay rates can be negotiated at hire time.
 - **Jump Plans**: Multi-hop route planning combining warp gate and coordinate jumps. Plans are executed step-by-step and can be interrupted by pirates.

@@ -45,6 +45,15 @@ Otherwise → Use MerchantCommentaryService::generateShipCommentary()
 | `buyer_affordability` | `way_too_rich`, `comfortable`, `stretching`, `cant_afford` | `credits / price` vs config multiplier thresholds |
 | `buyer_comparison` | `first_ship`, `upgrade`, `sidegrade`, `downgrade` | Ships only: combined score ratio of current vs browsed ship |
 
+### Vendor Context (requires VendorProfile + PlayerVendorRelationship)
+
+| Tag | Values | How Scored |
+|-----|--------|------------|
+| `vendor_archetype` | `opportunist`, `professional`, `lucky_fence`, `indifferent`, `shark`, `pushover`, `paranoid`, `gambler`, `honest_dealer` | From `VendorProfile.archetype` |
+| `relationship_tier` | `stranger`, `regular`, `favorite_mark`, `persona_non_grata` | From relationship state: 0 interactions = stranger, 5+ = regular, escalation > 0.20 = favorite_mark, goodwill < -0.5 = persona_non_grata |
+
+See [Vendor Profiles](vendor-profiles.md) for full details on the vendor system.
+
 ## Configuration
 
 Scoring thresholds are tunable in `config/game_config.php`:
@@ -108,8 +117,9 @@ $service->generateShipCommentary(Ship $ship, float $currentPrice, ?Player $playe
 $service->generateComponentCommentary(ShipComponent $component, SalvageYardInventory $item, ?Player $player = null): string
 
 // Direct scoring (for testing/debugging)
-$service->scoreShip(Ship $ship, float $currentPrice, ?Player $player = null): array
-$service->scoreComponent(ShipComponent $component, SalvageYardInventory $item, ?Player $player = null): array
+// Optional VendorProfile and PlayerVendorRelationship add vendor_archetype and relationship_tier tags
+$service->scoreShip(Ship $ship, float $currentPrice, ?Player $player = null, ?VendorProfile $vendor = null, ?PlayerVendorRelationship $relationship = null): array
+$service->scoreComponent(ShipComponent $component, SalvageYardInventory $item, ?Player $player = null, ?VendorProfile $vendor = null, ?PlayerVendorRelationship $relationship = null): array
 
 // Direct selection (for custom tag maps)
 $service->selectCommentary(array $tags, array $replacements): string

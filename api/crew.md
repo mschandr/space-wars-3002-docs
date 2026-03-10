@@ -102,20 +102,50 @@ Hire a new randomly generated crew member into the company roster.
 
 #### Request Body
 
-| Parameter | Type   | Required | Description                                                   |
-|-----------|--------|----------|---------------------------------------------------------------|
-| role      | string | Yes      | `pilot`, `weapons_officer`, `science_officer`, `chief_engineer` |
+| Parameter         | Type    | Required | Description                                                   |
+|-------------------|---------|----------|---------------------------------------------------------------|
+| role              | string  | Yes      | `pilot`, `weapons_officer`, `science_officer`, `chief_engineer` |
+| proposed_pay_rate | numeric | No       | Optional: propose a lower pay rate for the crew member        |
+
+#### Pay Negotiation
+
+When `proposed_pay_rate` is provided, the crew candidate negotiates their pay. Each candidate acts as their own "vendor" — their stats determine the outcome.
+
+**Roll formula:**
+```
+candidate_resistance = experience * (1 - (morale - 0.5) * 0.3)
+player_power         = player_level / 20
+luck_swing           = (candidate.luck - 0.5) * 0.2
+roll                 = player_power - candidate_resistance + luck_swing + random(-0.10, 0.10)
+```
+
+**Outcomes:**
+- `accepted` (roll > 0.30): Candidate accepts proposed rate
+- `counter` (roll > 0.00): Final rate = average of proposed and rolled rates
+- `rejected` (roll <= 0.00): Candidate insists on their rolled rate
+
+**Walk-away:** If `proposed_pay_rate < 0.01`, the candidate refuses entirely (error code `CREW_WALKAWAY`).
+
+When negotiation occurs, the response includes extra fields:
+```json
+{
+  "negotiation_outcome": "accepted",
+  "original_pay_rate": 0.035,
+  "final_pay_rate": 0.025
+}
+```
 
 #### Success Response (201 Created)
 
-Returns the newly hired crew member (same format as list items above).
+Returns the newly hired crew member (same format as list items above), plus negotiation fields if applicable.
 
 #### Error Responses
 
-| Code | Error Code           | Condition                            |
-|------|----------------------|--------------------------------------|
-| 422  | CREW_ROSTER_FULL     | Roster at max capacity               |
-| 422  | INSUFFICIENT_CREDITS | Not enough credits for hiring fee    |
+| Code | Error Code           | Condition                                |
+|------|----------------------|------------------------------------------|
+| 422  | CREW_ROSTER_FULL     | Roster at max capacity                   |
+| 422  | INSUFFICIENT_CREDITS | Not enough credits for hiring fee        |
+| 422  | CREW_WALKAWAY        | Proposed pay rate too low (< 0.01)       |
 
 **Hiring cost**: Configured in `game_config.crew.hire_cost` (default: 500 credits).
 

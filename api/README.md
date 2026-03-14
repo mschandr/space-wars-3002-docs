@@ -20,7 +20,8 @@
 | [scanning-exploration.md](scanning-exploration.md) | Scanning & Exploration | 5 | System scans, scan results, exploration log, bulk scan levels, system data |
 | [world-data.md](world-data.md) | World Data | 5 | POI types (all, by category, habitable, mineable), individual type lookup |
 | [leaderboards-victory.md](leaderboards-victory.md) | Leaderboards & Victory | 9 | Overall/combat/economic/colonial rankings, player stats, victory conditions, progress |
-| [vendors.md](vendors.md) | Vendor Profiles & Negotiation | 2 | Vendor profile, price negotiation, vendor-adjusted pricing across all shops |
+| [vendors.md](vendors.md) | Vendor Profiles & Negotiation | 3 | Vendor profile, vendor dialogue (greeting), price negotiation, vendor-adjusted pricing across all shops |
+| [internal.md](internal.md) | Internal & Admin APIs | 6 | Go dialogue generator endpoints (pending, status, submit lines), admin dialogue management, artisan commands |
 | [crew.md](crew.md) | Crew System | 7 | Hire, fire, assign, unassign crew; ship persona |
 | [jump-plans.md](jump-plans.md) | Jump Plans | 4 | Multi-hop route planning, execute hops, pirate interruption |
 | [jump-bookmarks.md](jump-bookmarks.md) | Jump Bookmarks | 4 | List, create, update, delete player navigation bookmarks |

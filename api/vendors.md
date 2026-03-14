@@ -13,6 +13,7 @@ Complete API documentation for the vendor profile and negotiation system in Spac
 1. [Overview](#overview)
 2. [Vendor Endpoints](#vendor-endpoints)
    - [Get Vendor Profile](#get-vendor-profile)
+   - [Get Vendor Dialogue](#get-vendor-dialogue)
    - [Negotiate Price](#negotiate-price)
 3. [Vendor Impact on Existing Endpoints](#vendor-impact-on-existing-endpoints)
    - [Trading (Buy/Sell Minerals)](#trading-buysell-minerals)
@@ -93,6 +94,85 @@ Get the vendor profile, relationship state, and greeting for a trading hub.
 |------|------------------------------------|
 | 404  | Trading hub not found              |
 | 404  | No vendor at this trading hub      |
+
+---
+
+### Get Vendor Dialogue
+
+> **Added**: 2026-03-13
+
+Retrieve a contextual greeting line from a vendor, personalized to the player's relationship history. Used when a player first interacts with a vendor at a trading hub. Implements the §10.5 fallback chain: exact context → neutral context → repeat_customer bucket → static fallback.
+
+**Endpoint**: `GET /api/players/{playerUuid}/vendors/{vendorUuid}/dialogue`
+
+**Auth Required**: Yes (player must belong to authenticated user)
+
+#### Request Parameters
+
+| Parameter   | Type   | Required | Location | Description                                |
+|-------------|--------|----------|----------|--------------------------------------------|
+| playerUuid  | string | Yes      | Path     | Player UUID                                |
+| vendorUuid  | string | Yes      | Path     | GalaxyVendorProfile UUID (per-galaxy instance) |
+
+#### Success Response (200 OK)
+
+```json
+{
+  "success": true,
+  "data": {
+    "vendor": {
+      "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "service_type": "trading_hub",
+      "criminality": 0.27
+    },
+    "dialogue": {
+      "greeting": "Back again? Either I impress you or concern you."
+    },
+    "interaction_bucket": "repeat_customer",
+    "dialogue_status": "complete"
+  }
+}
+```
+
+#### Response Fields
+
+| Field                       | Type   | Description                                                                 |
+|-----------------------------|--------|-----------------------------------------------------------------------------|
+| `vendor.uuid`               | string | GalaxyVendorProfile UUID                                                    |
+| `vendor.service_type`       | string | Vendor service type (`trading_hub`, `salvage_yard`, `shipyard`, `market`)   |
+| `vendor.criminality`        | float  | Criminality score (0.0–1.0). Values ≥ 0.8 indicate black market dealer.    |
+| `dialogue.greeting`         | string | Selected voice line. May be pre-generated or static fallback.               |
+| `interaction_bucket`        | string | Interaction tier used for line selection (see below).                       |
+| `dialogue_status`           | string | Dialogue generation state (`complete`, `pending`, `failed`).                |
+
+#### Interaction Buckets
+
+The system categorizes players into a bucket based on visit count and relationship state:
+
+| Bucket            | Condition                              |
+|-------------------|----------------------------------------|
+| `first_contact`   | First visit to this vendor             |
+| `repeat_customer` | 2–9 prior visits                       |
+| `regular`         | 10–49 prior visits                     |
+| `vip`             | 50+ prior visits                       |
+
+#### Fallback Chain
+
+When no pre-generated dialogue exists for the exact context, the system falls back in order:
+1. Exact bucket + `transaction_context=neutral` + `inventory_context=none`
+2. `repeat_customer` bucket + `transaction_context=neutral` + `inventory_context=none`
+3. Static service-type fallback string (e.g. `"Looking to trade?"`)
+
+The `dialogue_status` field indicates whether pre-generated lines were available (`complete`) or if the response used a fallback (`pending` or `failed`).
+
+#### Error Responses
+
+| Code | Condition                                      |
+|------|------------------------------------------------|
+| 401  | Unauthenticated                                |
+| 403  | Player does not belong to authenticated user   |
+| 404  | Player not found                               |
+| 404  | Vendor (GalaxyVendorProfile) not found         |
 
 ---
 

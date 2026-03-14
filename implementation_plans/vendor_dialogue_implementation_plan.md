@@ -7,11 +7,11 @@
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| 1 | Foundational storage and retrieval | ~80% done — 3 items remaining |
-| 2 | Go dialogue generator | Go service — out of PHP scope |
-| 3 | Interaction verbs | Not started |
-| 4 | Runtime item fact composition | Not started |
-| 5 | Relationship drift | Not started |
+| 1 | Foundational storage and retrieval | ✅ Complete (2026-03-13) |
+| 2 | Go dialogue generator + PHP support layer | Not started — see `vendor_dialogue_phase2_php_implementation_plan.md` |
+| 3 | Interaction verbs | Not started — blocked on Phase 2 |
+| 4 | Runtime item fact composition | Not started — blocked on Phase 3 |
+| 5 | Relationship drift | Not started — blocked on Phase 4 |
 | 6 | Generalised NPC framework | Partially done (vendor pool pattern complete) |
 
 ---

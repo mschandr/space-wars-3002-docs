@@ -45,7 +45,7 @@ npm run build  # Production build
 ```bash
 # Initialize complete galaxy (all-in-one)
 # Auto-calculates warp gate adjacency based on dimensions (max_dimension / 15)
-php artisan galaxy:initialize {name?} --width=300 --height=300 --stars=3000 --grid-size=10
+php artisan galaxy:initialize {name?} --width=2500 --height=2500 --stars=1250 --grid-size=20
 
 # Skip optional steps
 php artisan galaxy:initialize --skip-gates --skip-pirates --skip-mirror
